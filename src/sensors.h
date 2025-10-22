@@ -13,6 +13,6 @@ void readPM25();
 
 float MQ135_calculator(int adcValue);
 float PM25_calculator(int adcValue);
-String getAirQualityLabel(float MQ135PPM, float PM25Concentration);
+String getAirQualityLabel(float MQ135PPM, float PM25Concentration, float Temperature, float Humidity);
 
 #endif

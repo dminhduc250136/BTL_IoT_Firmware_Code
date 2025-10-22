@@ -20,13 +20,14 @@ void sendToFirebase()
         return;
     }
 
+    double mq135_ppm = round((double)mq135Data.ppm * 100) / 100;
     // 1. Dùng FirebaseJSON
     FirebaseJson jsonPayload;
     jsonPayload.set("TEMP", dht11Data.temperature);
     jsonPayload.set("HUMI", dht11Data.humidity);
-    jsonPayload.set("PPM", mq135Data.ppm);
+    jsonPayload.set("PPM", mq135_ppm);
     jsonPayload.set("PM25", pm25Data.concentration);
-    jsonPayload.set("STATUS", getAirQualityLabel(mq135Data.ppm, pm25Data.concentration));
+    jsonPayload.set("STATUS", getAirQualityLabel(mq135_ppm, pm25Data.concentration, dht11Data.temperature, dht11Data.humidity));
     jsonPayload.set("TIMESTAMP", getCurrentTime());
 
     object_t payloadObject(jsonPayload.raw());

@@ -182,19 +182,37 @@ float PM25_calculator(int adcValue)
     return concentration;
 }
 
-String getAirQualityLabel(float MQ135PPM, float PM25Concentration)
+String getAirQualityLabel(float MQ135PPM, float PM25Concentration, float Temperature, float Humidity)
 {
-    if (MQ135PPM <= 400 && PM25Concentration <= 12)
+
+    // --- MỨC 3: RẤT KÉM (Very Poor) ---
+    if (PM25Concentration > 55.4 ||
+        MQ135PPM > 5000)
     {
-        return "Good";
+        return "Very Poor";
     }
-    else if (MQ135PPM <= 2000 && PM25Concentration <= 35.4)
-    {
-        return "Average";
-    }
-    else if (MQ135PPM <= 5000 && PM25Concentration <= 55.4)
+
+    // --- MỨC 2: KÉM (Poor) ---
+
+    else if (PM25Concentration > 35.4 ||
+             MQ135PPM > 2000 ||
+             (Humidity > 70.0 || Temperature > 32.0 || Temperature < 16.0))
     {
         return "Poor";
     }
-    return "Very Poor";
+
+    // --- MỨC 1: TRUNG BÌNH (Average) ---
+
+    else if (PM25Concentration > 12.0 ||
+             MQ135PPM > 1000 ||
+             (Humidity > 60.0 || Humidity < 30.0 || Temperature > 28.0 || Temperature < 18.0))
+    {
+        return "Average";
+    }
+
+    // --- MỨC 0: TỐT (Good) ---
+    else
+    {
+        return "Good";
+    }
 }

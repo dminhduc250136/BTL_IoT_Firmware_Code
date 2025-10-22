@@ -31,8 +31,8 @@
 #define FAN_OFF LOW
 
 // ======== Cấu hình WiFi ========
-#define WIFI_SSID "TP-LINK_5558"
-#define WIFI_PASSWORD "08167484"
+#define WIFI_SSID "Xiaomi 11T"
+#define WIFI_PASSWORD "111111111"
 
 // ======== Cấu hình Firebase ========
 #define API_KEY "AIzaSyCVzXG0ctuMb4EOmQPz2he58gj4TDsWFl4"
