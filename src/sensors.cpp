@@ -196,7 +196,7 @@ String getAirQualityLabel(float MQ135PPM, float PM25Concentration, float Tempera
 
     else if (PM25Concentration > 35.4 ||
              MQ135PPM > 2000 ||
-             (Humidity > 70.0 || Temperature > 32.0 || Temperature < 16.0))
+             (Humidity > 80.0 || Temperature > 34.0 || Temperature < 16.0))
     {
         return "Poor";
     }
@@ -205,7 +205,7 @@ String getAirQualityLabel(float MQ135PPM, float PM25Concentration, float Tempera
 
     else if (PM25Concentration > 12.0 ||
              MQ135PPM > 1000 ||
-             (Humidity > 60.0 || Humidity < 30.0 || Temperature > 28.0 || Temperature < 18.0))
+             (Humidity > 70.0 || Humidity < 30.0 || Temperature > 32.0 || Temperature < 18.0))
     {
         return "Average";
     }
