@@ -21,5 +21,6 @@ void processData(AsyncResult &aResult);
 
 // Hàm callback khi "nghe" (stream) có dữ liệu mới
 void processFanData(AsyncResult &aResult);
+void uploadAutoFanState();
 
 #endif

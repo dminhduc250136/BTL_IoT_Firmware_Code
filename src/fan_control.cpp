@@ -1,6 +1,6 @@
 #include "config.h"
 #include "fan_control.h"
-
+#include "sensors.h"
 void setupFan()
 {
     Serial.println("Initializing fan...");
@@ -11,37 +11,31 @@ void setupFan()
     Serial.println("Success!");
 }
 
-void setFanState(bool manualStateOn)
+void setFanState(bool on)
 {
-    if (manualStateOn != fanData.fanOn)
+    if (on != fanData.fanOn)
     {
-        digitalWrite(RELAY_PIN, manualStateOn ? FAN_ON : FAN_OFF);
-        fanData.fanOn = manualStateOn;
-        Serial.printf("Fan turned %s\n", manualStateOn ? "ON" : "OFF");
-
-        if (firebaseConnected && !fanData.isManualMode)
-        {
-            Database.set(aClient_Tasks, "/controls" + String(ROOT) + "/fan", manualStateOn ? "ON" : "OFF");
-        }
+        digitalWrite(RELAY_PIN, on ? FAN_ON : FAN_OFF);
+        fanData.fanOn = on;
+        Serial.printf("Fan turned %s\n", on ? "ON" : "OFF");
     }
 }
 
 void handleAutoFanControl()
 {
 
-    float temp = dht11Data.temperature;
-    float hum = dht11Data.humidity;
-
-    float mq135_ppm = mq135Data.ppm;
-    float pm25_conc = pm25Data.concentration;
-
-    if (temp > TEMP_THRESHOLD_HIGH || hum > HUMIDITY_THRESHOLD_HIGH || mq135_ppm > MQ135PPM_THRESHOLD_HIGH || pm25_conc > PM25_THRESHOLD_HIGH)
+    String currentStatus = getAirQualityLabel(mq135Data.ppm, pm25Data.concentration, dht11Data.temperature, dht11Data.humidity);
+    if (currentStatus == "Very Poor" || currentStatus == "Poor")
     {
         setFanState(true);
     }
-    else if (temp < TEMP_THRESHOLD_LOW && hum < HUMIDITY_THRESHOLD_LOW && mq135_ppm < MQ135PPM_THRESHOLD_LOW && pm25_conc < PM25_THRESHOLD_LOW)
+    else if (currentStatus == "Good")
     {
         setFanState(false);
+    }
+
+    else if (currentStatus == "Average")
+    {
     }
     return;
 }

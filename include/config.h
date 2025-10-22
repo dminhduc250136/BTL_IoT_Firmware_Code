@@ -50,7 +50,7 @@
 #define TEMP_THRESHOLD_HIGH 37.78
 #define TEMP_THRESHOLD_LOW 32.0
 #define HUMIDITY_THRESHOLD_HIGH 80.0
-#define HUMIDITY_THRESHOLD_LOW 60.0
+#define HUMIDITY_THRESHOLD_LOW 50.0
 #define MQ135PPM_THRESHOLD_HIGH 400.0
 #define MQ135PPM_THRESHOLD_LOW 100.0
 #define PM25_THRESHOLD_HIGH 12
@@ -59,6 +59,9 @@
 // ======== CÁC BIẾN HẸN GIỜ (TIMERS) ========
 static unsigned long lastSend = 0;
 #define SEND_INTERVAL 5000 // 5 giây (Gửi data)
+
+static unsigned long autoFanLastUpload = 0;
+#define UPLOAD_AUTOFAN 10000
 
 static unsigned long lastSerialPrint = 0;
 #define READ_INTERVAL 5000  // 5 giây (In log)

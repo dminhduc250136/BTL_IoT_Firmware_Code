@@ -67,12 +67,18 @@ void loop()
         firebaseConnected = true;
 
         // Gửi lên Firebase
-        if (millis() - lastSend > SEND_INTERVAL)
+        if (millis() - lastSend >= SEND_INTERVAL)
         {
             Serial.println("TEMP: " + String(dht11Data.temperature) + " C, HUMI: " + String(dht11Data.humidity) + " %, PPM: " + String(mq135Data.ppm) + " ug/m3" + ", PM2.5: " + String(pm25Data.concentration) + " ug/m3" + "STATUS: " + getAirQualityLabel(mq135Data.ppm, pm25Data.concentration, dht11Data.temperature, dht11Data.humidity));
             displayOLED(dht11Data.temperature, dht11Data.humidity, mq135Data.ppm, getAirQualityLabel(mq135Data.ppm, pm25Data.concentration, dht11Data.temperature, dht11Data.humidity));
             sendToFirebase();
             lastSend = millis();
+        }
+
+        if (!fanData.isManualMode && (millis() - autoFanLastUpload >= UPLOAD_AUTOFAN))
+        {
+            uploadAutoFanState();
+            autoFanLastUpload = millis();
         }
 
         // set fan mode and fan state first time
@@ -101,5 +107,5 @@ void loop()
         handleAutoFanControl();
     }
 
-    delay(10);
+    delay(100);
 }

@@ -161,3 +161,12 @@ void startFanStream()
     fanStreamStarted = true;
     return;
 }
+
+void uploadAutoFanState()
+{
+    if (firebaseConnected)
+    {
+        String path = "/controls" + String(ROOT) + "/fan";
+        Database.set(aClient_Tasks, path, fanData.fanOn ? "ON" : "OFF", processData, "update auto fan status to firebase");
+    }
+}
