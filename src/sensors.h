@@ -11,8 +11,8 @@ void readDHT11();
 void readMQ135();
 void readPM25();
 
-float MQ135_calculator(int adcValue);
-float PM25_calculator(int adcValue);
-String getAirQualityLabel(float MQ135PPM, float PM25Concentration, float Temperature, float Humidity);
+double MQ135_calculator(int adcValue);
+double PM25_calculator(int adcValue);
+String getAirQualityLabel(double MQ135PPM, double PM25Concentration, float Temperature, float Humidity);
 
 #endif

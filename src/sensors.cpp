@@ -132,7 +132,7 @@ void readPM25()
     }
     pinMode(PM25_LED_PIN, OUTPUT);
     pinMode(PM25_SENSOR_PIN, INPUT);
-    float pm25_initial_adc = analogRead(PM25_SENSOR_PIN);
+    int pm25_initial_adc = analogRead(PM25_SENSOR_PIN);
     delayMicroseconds(40);
     digitalWrite(PM25_LED_PIN, HIGH);
     delayMicroseconds(9680);
@@ -148,7 +148,7 @@ void readPM25()
     return;
 }
 
-float MQ135_calculator(int adcValue)
+double MQ135_calculator(int adcValue)
 {
     if (adcValue <= 0)
         return 0;
@@ -165,44 +165,37 @@ float MQ135_calculator(int adcValue)
     // 4. Tính ppm theo công thức thực nghiệm
     float a = 116.6020682;
     float b = 2.769034857;
-    float ppm = a * pow(ratio, -b);
+    double ppm = a * pow(ratio, -b);
 
-    return ppm;
+    return round(ppm * 100) / 100;
 }
 
-float PM25_calculator(int adcValue)
+double PM25_calculator(int adcValue)
 {
     if (adcValue <= 0)
         return 0;
 
     // Công thức chuyển đổi
-    float voltage = (adcValue / 4095.0) * 5.0;
-    float concentration = voltage * 100.0;
+    double voltage = (adcValue / 4095.0) * 5.0;
+    double concentration = voltage * 100.0;
 
+    concentration = round(concentration * 100) / 100;
     return concentration;
 }
 
-String getAirQualityLabel(float MQ135PPM, float PM25Concentration, float Temperature, float Humidity)
+String getAirQualityLabel(double MQ135PPM, double PM25Concentration, float Temperature, float Humidity)
 {
-
-    // --- MỨC 3: RẤT KÉM (Very Poor) ---
     if (PM25Concentration > 55.4 ||
         MQ135PPM > 5000)
     {
         return "Very Poor";
     }
-
-    // --- MỨC 2: KÉM (Poor) ---
-
     else if (PM25Concentration > 35.4 ||
              MQ135PPM > 2000 ||
              (Humidity > 80.0 || Temperature > 34.0 || Temperature < 16.0))
     {
         return "Poor";
     }
-
-    // --- MỨC 1: TRUNG BÌNH (Average) ---
-
     else if (PM25Concentration > 12.0 ||
              MQ135PPM > 1000 ||
              (Humidity > 70.0 || Humidity < 30.0 || Temperature > 32.0 || Temperature < 18.0))
@@ -210,7 +203,6 @@ String getAirQualityLabel(float MQ135PPM, float PM25Concentration, float Tempera
         return "Average";
     }
 
-    // --- MỨC 0: TỐT (Good) ---
     else
     {
         return "Good";

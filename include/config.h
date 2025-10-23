@@ -113,7 +113,7 @@ extern FanData fanData;
 
 struct MQ135Data
 {
-    float ppm = 0;
+    double ppm = 0;
     unsigned long lastRead = 0;
     bool initialized = false;
     bool error = false;
@@ -121,7 +121,7 @@ struct MQ135Data
 extern MQ135Data mq135Data;
 struct PM25Data
 {
-    float concentration = 0;
+    double concentration = 0;
     unsigned long lastRead = 0;
     bool initialized = false;
     bool error = false;
